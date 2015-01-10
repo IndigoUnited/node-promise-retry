@@ -10,12 +10,9 @@ function promiseRetry(fn, options) {
     return new Promise(function (resolve, reject) {
         operation.attempt(function () {
             var promise;
-            var retried;
 
             promise = Promise.try(function () {
                 return fn(function (err) {
-                    retried = true;
-
                     if (operation.retry(err)) {
                         return errcode('Retrying', 'EPROMISERETRY');
                     }
