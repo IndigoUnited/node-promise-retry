@@ -54,7 +54,7 @@ promiseRetry(function (retry) {
         }
 
         throw err;
-    })
+    });
 })
 .then(function (value) {
     // ..
