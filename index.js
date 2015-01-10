@@ -33,8 +33,8 @@ function promiseRetry(fn, options) {
                 if (err && err.code === 'EPROMISERETRY') {
                     err = err.original;
 
-                    if (operation.retry(err.original)) {
-                        throw err.original;
+                    if (operation.retry(err)) {
+                        throw err;
                     }
                 }
 

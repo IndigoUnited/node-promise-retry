@@ -53,7 +53,7 @@ describe('promise-retry', function () {
         .done(done, done);
     });
 
-    it.only('should pass options to the underlying retry module', function (done) {
+    it('should pass options to the underlying retry module', function (done) {
         var count = 0;
 
         promiseRetry(function (retry) {
