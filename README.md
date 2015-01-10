@@ -46,7 +46,7 @@ promiseRetry(function (retry) {
     // ..
 }, function (err) {
     // ..
-})
+});
 ```
 
 
