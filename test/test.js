@@ -104,4 +104,16 @@ describe('promise-retry', function () {
         })
         .done(done, done);
     });
+
+    it('should not fail on undefined rejections', function (done) {
+        promiseRetry(function () {
+            throw undefined;
+        }, { retries: 1, factor: 1 })
+        .then(function () {
+            throw new Error('should not succeed');
+        }, function (err) {
+            expect(err).to.be(undefined);
+        })
+        .done(done, done);
+    });
 });
