@@ -1,6 +1,6 @@
 # node-promise-retry [![Build Status](https://travis-ci.org/IndigoUnited/node-promise-retry.svg?branch=master)](https://travis-ci.org/IndigoUnited/node-promise-retry)
 
-Retries a function that returns a promise, leveraging the power of the [retry](https://github.com/tim-kos/node-retry) module.
+Retries a function that returns a promise, leveraging the power of the [retry](https://github.com/tim-kos/node-retry) module to the promises world.
 
 There's already some modules that are able to retry functions that return promises but
 they were rather difficult to use or do not offer an easy to do conditional retries.
@@ -55,6 +55,11 @@ promiseRetry(function (retry) {
 
         throw err;
     })
+})
+.then(function (value) {
+    // ..
+}, function (err) {
+    // ..
 });
 ```
 
