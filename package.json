@@ -1,0 +1,35 @@
+{
+  "name": "promise-retry",
+  "version": "0.1.0",
+  "description": "Retries a function that returns a promise, leveraging the power of the retry module.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --bail -R spec -t 10000"
+  },
+  "bugs": {
+    "url": "https://github.com/IndigoUnited/node-deep-compact/issues/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/IndigoUnited/node-deep-compact.git"
+  },
+  "keywords": [
+    "retry",
+    "promise",
+    "backoff",
+    "bluebird",
+    "repeat",
+    "replay"
+  ],
+  "author": "IndigoUnited <hello@indigounited.com> (http://indigounited.com)",
+  "license": "MIT",
+  "devDependencies": {
+    "expect.js": "^0.3.1",
+    "mocha": "^2.1.0"
+  },
+  "dependencies": {
+    "bluebird": "^2.6.2",
+    "err-code": "^0.1.2",
+    "retry": "^0.6.1"
+  }
+}
