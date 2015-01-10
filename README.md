@@ -26,21 +26,20 @@ The `options` argument is an object which maps to the [retry](https://github.com
 - `randomize`: Randomizes the timeouts by multiplying with a factor between `1` to `2`. Default is `false`.
 
 
+The `fn` function will receive a `retry` function as its first argument that should be called with an error whenever you want to retry `fn`.
+
+The `retry` function will always throw an error.
+If there's retries left, it will throw a "retry" error that will be handled internally to call `fn`again.
+If there's no retries left, it will throw the actual error passed to it.
+
+
 ```js
 var promiseRetry = require('promise-retry');
 
+// Simple example
 promiseRetry(function (retry) {
     return doSomething()
-    .then(null, function (err) {
-        if (err.code === 'ETIMEDOUT') {
-            // Will throw a retry error that will cause the function
-            // to be called again or will throw the actual error if there's
-            // no retries left
-            throw retry(err)
-        } else {
-            throw err;
-        }
-    });
+    .catch(retry);
 })
 .then(function (value) {
     // ..
@@ -48,6 +47,18 @@ promiseRetry(function (retry) {
     // ..
 });
 ```
+
+// Conditional example
+promiseRetry(function (retry) {
+    return doSomething()
+    .catch(function (err) {
+        if (err.code === 'ETIMEDOUT') {
+            retry(err);
+        }
+
+        throw err;
+    })
+});
 
 
 ## Tests

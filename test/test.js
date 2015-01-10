@@ -13,7 +13,7 @@ describe('promise-retry', function () {
             .then(function () {
                 if (count < 2) {
                     count += 1;
-                    throw retry(new Error('foo'));
+                    retry(new Error('foo'));
                 }
 
                 return 'final';
@@ -53,7 +53,7 @@ describe('promise-retry', function () {
         .done(done, done);
     });
 
-    it('should pass options to the underlying retry module', function (done) {
+    it.only('should pass options to the underlying retry module', function (done) {
         var count = 0;
 
         promiseRetry(function (retry) {
@@ -61,7 +61,7 @@ describe('promise-retry', function () {
             .then(function () {
                 if (count < 2) {
                     count += 1;
-                    throw retry(new Error('foo'));
+                    retry(new Error('foo'));
                 }
 
                 return 'final';
@@ -81,7 +81,7 @@ describe('promise-retry', function () {
         promiseRetry(function (retry) {
             if (count < 2) {
                 count += 1;
-                throw retry(new Error('foo'));
+                retry(new Error('foo'));
             }
 
             return 'final';
@@ -113,6 +113,24 @@ describe('promise-retry', function () {
             throw new Error('should not succeed');
         }, function (err) {
             expect(err).to.be(undefined);
+        })
+        .done(done, done);
+    });
+
+    it('should work with several retries in the same chain', function (done) {
+        promiseRetry(function (retry) {
+            return Promise.delay(10)
+            .then(function () {
+                retry(new Error('foo'));
+            })
+            .catch(function (err) {
+                retry(err);
+            });
+        }, { retries: 1, factor: 1 })
+        .then(function () {
+            throw new Error('should not succeed');
+        }, function (err) {
+            expect(err.message).to.be('foo');
         })
         .done(done, done);
     });
