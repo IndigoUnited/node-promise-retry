@@ -15,7 +15,7 @@ they were rather difficult to use or do not offer an easy to do conditional retr
 
 ### promiseRetry(fn, [options])
 
-Calls `fn` until the returned promise is fulfilled or rejected with an error different than
+Calls `fn` until the returned promise ends up fulfilled or rejected with an error different than
 a `retry` error.   
 The `options` argument is an object which maps to the [retry](https://github.com/tim-kos/node-retry) module options:
 
@@ -26,10 +26,8 @@ The `options` argument is an object which maps to the [retry](https://github.com
 - `randomize`: Randomizes the timeouts by multiplying with a factor between `1` to `2`. Default is `false`.
 
 
-The `fn` function will receive a `retry` function as its first argument that should be called with an error whenever you want to retry `fn`.
-
-The `retry` function will always throw an error.
-If there's retries left, it will throw a "retry" error that will be handled internally to call `fn`again.
+The `fn` function will receive a `retry` function as its first argument that should be called with an error whenever you want to retry `fn`. The `retry` function will always throw an error.   
+If there's retries left, it will throw a special `retry` error that will be handled internally to call `fn` again.
 If there's no retries left, it will throw the actual error passed to it.
 
 
@@ -46,7 +44,6 @@ promiseRetry(function (retry) {
 }, function (err) {
     // ..
 });
-```
 
 // Conditional example
 promiseRetry(function (retry) {
@@ -59,6 +56,7 @@ promiseRetry(function (retry) {
         throw err;
     })
 });
+```
 
 
 ## Tests
