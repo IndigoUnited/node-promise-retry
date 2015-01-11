@@ -5,14 +5,15 @@ var Promise = require('bluebird');
 var promiseRetry = require('../');
 
 describe('promise-retry', function () {
-    it('should retry if retry was called', function (done) {
+    it('should call fn again if retry was called', function (done) {
         var count = 0;
 
         promiseRetry(function (retry) {
+            count += 1;
+
             return Promise.delay(10)
             .then(function () {
-                if (count < 2) {
-                    count += 1;
+                if (count <= 2) {
                     retry(new Error('foo'));
                 }
 
@@ -21,34 +22,60 @@ describe('promise-retry', function () {
         }, { factor: 1 })
         .then(function (value) {
             expect(value).to.be('final');
-            expect(count).to.be(2);
+            expect(count).to.be(3);
         })
         .done(done, done);
     });
 
-    it('should not retry if retry was not called', function (done) {
+    it('should not retry on fulfillment if retry was not called', function (done) {
         var count = 0;
 
         promiseRetry(function () {
+            count += 1;
+
             return Promise.delay(10)
             .thenReturn('final');
         })
         .then(function (value) {
             expect(value).to.be('final');
-            expect(count).to.be(0);
+            expect(count).to.be(1);
+        })
+        .done(done, done);
+    });
+
+    it('should not retry on rejection if retry was not called', function (done) {
+        var count = 0;
+
+        promiseRetry(function () {
+            count += 1;
+
+            return Promise.delay(10)
+            .thenThrow(new Error('foo'));
+        })
+        .then(function () {
+            throw new Error('should not succeed');
+        }, function (err) {
+            expect(err.message).to.be('foo');
+            expect(count).to.be(1);
         })
         .done(done, done);
     });
 
     it('should reject the promise if the retries were exceeded', function (done) {
-        promiseRetry(function () {
+        var count = 0;
+
+        promiseRetry(function (retry) {
+            count += 1;
+
             return Promise.delay(10)
-            .thenThrow(new Error('foo'));
-        }, { retries: 1, factor: 1 })
+            .thenThrow(new Error('foo'))
+            .catch(retry);
+        }, { retries: 2, factor: 1 })
         .then(function () {
             throw new Error('should not succeed');
         }, function (err) {
             expect(err.message).to.be('foo');
+            expect(count).to.be(3);
         })
         .done(done, done);
     });
@@ -75,25 +102,17 @@ describe('promise-retry', function () {
         .done(done, done);
     });
 
-    it('should convert values into promises', function (done) {
-        var count = 0;
-
-        promiseRetry(function (retry) {
-            if (count < 2) {
-                count += 1;
-                retry(new Error('foo'));
-            }
-
+    it('should convert direct fulfillments into promises', function (done) {
+        promiseRetry(function () {
             return 'final';
         }, { factor: 1 })
         .then(function (value) {
             expect(value).to.be('final');
-            expect(count).to.be(2);
         })
         .done(done, done);
     });
 
-    it('should convert errors into promises', function (done) {
+    it('should convert direct rejections into promises', function (done) {
         promiseRetry(function () {
             throw new Error('foo');
         }, { retries: 1, factor: 1 })
@@ -128,7 +147,11 @@ describe('promise-retry', function () {
     });
 
     it('should work with several retries in the same chain', function (done) {
+        var count = 0;
+
         promiseRetry(function (retry) {
+            count += 1;
+
             return Promise.delay(10)
             .then(function () {
                 retry(new Error('foo'));
@@ -141,6 +164,7 @@ describe('promise-retry', function () {
             throw new Error('should not succeed');
         }, function (err) {
             expect(err.message).to.be('foo');
+            expect(count).to.be(2);
         })
         .done(done, done);
     });
