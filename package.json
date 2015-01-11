@@ -7,11 +7,11 @@
     "test": "mocha --bail -R spec -t 10000"
   },
   "bugs": {
-    "url": "https://github.com/IndigoUnited/node-deep-compact/issues/"
+    "url": "https://github.com/IndigoUnited/node-promise-retry/issues/"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/IndigoUnited/node-deep-compact.git"
+    "url": "git://github.com/IndigoUnited/node-promise-retry.git"
   },
   "keywords": [
     "retry",
