@@ -4,8 +4,6 @@ var errcode = require('err-code');
 var retry = require('retry');
 var Promise = require('bluebird');
 
-var emptyFunc = function () {};
-
 function promiseRetry(fn, options) {
     var operation = retry.operation(options);
 
@@ -25,18 +23,17 @@ function promiseRetry(fn, options) {
                 });
             });
 
-            promise.then(resolve, function (err) {
+            promise.done(resolve, function (err) {
                 if (err && err.code === 'EPROMISERETRY') {
                     err = err.original;
 
                     if (operation.retry(err)) {
-                        throw err;
+                        return;
                     }
                 }
 
                 reject(err);
-            })
-            .done(emptyFunc, emptyFunc);
+            });
         });
     });
 }
