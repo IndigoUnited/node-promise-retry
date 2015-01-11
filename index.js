@@ -8,7 +8,7 @@ function promiseRetry(fn, options) {
     var operation = retry.operation(options);
 
     return new Promise(function (resolve, reject) {
-        operation.attempt(function () {
+        operation.attempt(function (number) {
             var promise;
 
             promise = Promise.try(function () {
@@ -20,7 +20,7 @@ function promiseRetry(fn, options) {
                     throw errcode('Retrying', 'EPROMISERETRY', {
                         original: err
                     });
-                });
+                }, number);
             });
 
             promise.done(resolve, function (err) {

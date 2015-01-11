@@ -35,7 +35,9 @@ If there's no retries left, it will throw the actual error passed to it.
 var promiseRetry = require('promise-retry');
 
 // Simple example
-promiseRetry(function (retry) {
+promiseRetry(function (retry, number) {
+    console.log('attempt number', number);
+
     return doSomething()
     .catch(retry);
 })
@@ -46,7 +48,9 @@ promiseRetry(function (retry) {
 });
 
 // Conditional example
-promiseRetry(function (retry) {
+promiseRetry(function (retry, number) {
+    console.log('attempt number', number);
+
     return doSomething()
     .catch(function (err) {
         if (err.code === 'ETIMEDOUT') {

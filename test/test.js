@@ -29,6 +29,31 @@ describe('promise-retry', function () {
         .done(done, done);
     });
 
+    it('should call fn with the attempt number', function (done) {
+        var count = 0;
+
+        promiseRetry(function (retry, number) {
+            count += 1;
+            expect(count).to.equal(number);
+
+            return Promise.delay(10)
+            .then(function () {
+                if (count <= 2) {
+                    retry(new Error('foo'));
+                }
+
+                return 'final';
+            });
+        }, { factor: 1 })
+        .then(function (value) {
+            expect(value).to.be('final');
+            expect(count).to.be(3);
+        }, function () {
+            throw new Error('should not fail');
+        })
+        .done(done, done);
+    });
+
     it('should not retry on fulfillment if retry was not called', function (done) {
         var count = 0;
 
