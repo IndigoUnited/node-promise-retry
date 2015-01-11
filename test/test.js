@@ -114,6 +114,16 @@ describe('promise-retry', function () {
         }, function (err) {
             expect(err).to.be(undefined);
         })
+        .then(function () {
+            return promiseRetry(function (retry) {
+                retry();
+            }, { retries: 1, factor: 1 });
+        })
+        .then(function () {
+            throw new Error('should not succeed');
+        }, function (err) {
+            expect(err).to.be(undefined);
+        })
         .done(done, done);
     });
 

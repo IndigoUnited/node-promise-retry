@@ -15,11 +15,7 @@ function promiseRetry(fn, options) {
 
             promise = Promise.try(function () {
                 return fn(function (err) {
-                    if (!err) {
-                        throw new Error('Retry called without an error');
-                    }
-
-                    if (err.code === 'EPROMISERETRY') {
+                    if (err && err.code === 'EPROMISERETRY') {
                         err = err.original;
                     }
 
