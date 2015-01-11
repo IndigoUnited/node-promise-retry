@@ -27,7 +27,7 @@ function promiseRetry(fn, options) {
                 if (err && err.code === 'EPROMISERETRY') {
                     err = err.original;
 
-                    if (operation.retry(err)) {
+                    if (operation.retry(err || new Error())) {
                         return;
                     }
                 }

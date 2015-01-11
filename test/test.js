@@ -23,6 +23,8 @@ describe('promise-retry', function () {
         .then(function (value) {
             expect(value).to.be('final');
             expect(count).to.be(3);
+        }, function () {
+            throw new Error('should not fail');
         })
         .done(done, done);
     });
@@ -39,6 +41,8 @@ describe('promise-retry', function () {
         .then(function (value) {
             expect(value).to.be('final');
             expect(count).to.be(1);
+        }, function () {
+            throw new Error('should not fail');
         })
         .done(done, done);
     });
@@ -108,6 +112,8 @@ describe('promise-retry', function () {
         }, { factor: 1 })
         .then(function (value) {
             expect(value).to.be('final');
+        }, function () {
+            throw new Error('should not fail');
         })
         .done(done, done);
     });
@@ -124,7 +130,7 @@ describe('promise-retry', function () {
         .done(done, done);
     });
 
-    it('should not fail on undefined rejections', function (done) {
+    it('should not crash on undefined rejections', function (done) {
         promiseRetry(function () {
             throw undefined;
         }, { retries: 1, factor: 1 })
@@ -142,6 +148,30 @@ describe('promise-retry', function () {
             throw new Error('should not succeed');
         }, function (err) {
             expect(err).to.be(undefined);
+        })
+        .done(done, done);
+    });
+
+    it('should retry if retry() was called with undefined', function (done) {
+        var count = 0;
+
+        promiseRetry(function (retry) {
+            count += 1;
+
+            return Promise.delay(10)
+            .then(function () {
+                if (count <= 2) {
+                    retry();
+                }
+
+                return 'final';
+            });
+        }, { factor: 1 })
+        .then(function (value) {
+            expect(value).to.be('final');
+            expect(count).to.be(3);
+        }, function () {
+            throw new Error('should not fail');
         })
         .done(done, done);
     });
