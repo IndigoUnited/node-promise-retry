@@ -90,6 +90,25 @@ describe('promise-retry', function () {
         .done(done, done);
     });
 
+    it('should not retry on rejection if nr of retries is 0', function (done) {
+        var count = 0;
+
+        promiseRetry(function (retry) {
+            count += 1;
+
+            return Promise.delay(10)
+            .thenThrow(new Error('foo'))
+            .catch(retry);
+        }, { retries : 0 })
+        .then(function () {
+            throw new Error('should not succeed');
+        }, function (err) {
+            expect(err.message).to.be('foo');
+            expect(count).to.be(1);
+        })
+        .done(done, done);
+    });
+
     it('should reject the promise if the retries were exceeded', function (done) {
         var count = 0;
 
