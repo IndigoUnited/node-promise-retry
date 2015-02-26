@@ -4,6 +4,12 @@ var errcode = require('err-code');
 var retry = require('retry');
 var Promise = require('bluebird');
 
+var hasOwn = Object.prototype.hasOwnProperty;
+
+function isRetryError(err) {
+    return err && err.code === 'EPROMISERETRY' && hasOwn.call(err, 'retried');
+}
+
 function promiseRetry(fn, options) {
     var operation = retry.operation(options);
 
@@ -13,19 +19,19 @@ function promiseRetry(fn, options) {
 
             promise = Promise.try(function () {
                 return fn(function (err) {
-                    if (err && err.code === 'EPROMISERETRY') {
-                        err = err.original;
+                    if (isRetryError(err)) {
+                        err = err.retried;
                     }
 
                     throw errcode('Retrying', 'EPROMISERETRY', {
-                        original: err
+                        retried: err
                     });
                 }, number);
             });
 
             promise.done(resolve, function (err) {
-                if (err && err.code === 'EPROMISERETRY') {
-                    err = err.original;
+                if (isRetryError(err)) {
+                    err = err.retried;
 
                     if (operation.retry(err || new Error())) {
                         return;
