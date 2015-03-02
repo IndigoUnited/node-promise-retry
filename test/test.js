@@ -8,7 +8,7 @@ describe('promise-retry', function () {
     it('should call fn again if retry was called', function (done) {
         var count = 0;
 
-        promiseRetry(function (retry) {
+        promiseRetry({ factor: 1 }, function (retry) {
             count += 1;
 
             return Promise.delay(10)
@@ -19,7 +19,7 @@ describe('promise-retry', function () {
 
                 return 'final';
             });
-        }, { factor: 1 })
+        })
         .then(function (value) {
             expect(value).to.be('final');
             expect(count).to.be(3);
@@ -32,7 +32,7 @@ describe('promise-retry', function () {
     it('should call fn with the attempt number', function (done) {
         var count = 0;
 
-        promiseRetry(function (retry, number) {
+        promiseRetry({ factor: 1 }, function (retry, number) {
             count += 1;
             expect(count).to.equal(number);
 
@@ -44,7 +44,7 @@ describe('promise-retry', function () {
 
                 return 'final';
             });
-        }, { factor: 1 })
+        })
         .then(function (value) {
             expect(value).to.be('final');
             expect(count).to.be(3);
@@ -93,13 +93,13 @@ describe('promise-retry', function () {
     it('should not retry on rejection if nr of retries is 0', function (done) {
         var count = 0;
 
-        promiseRetry(function (retry) {
+        promiseRetry({ retries : 0 }, function (retry) {
             count += 1;
 
             return Promise.delay(10)
             .thenThrow(new Error('foo'))
             .catch(retry);
-        }, { retries : 0 })
+        })
         .then(function () {
             throw new Error('should not succeed');
         }, function (err) {
@@ -112,13 +112,13 @@ describe('promise-retry', function () {
     it('should reject the promise if the retries were exceeded', function (done) {
         var count = 0;
 
-        promiseRetry(function (retry) {
+        promiseRetry({ retries: 2, factor: 1 }, function (retry) {
             count += 1;
 
             return Promise.delay(10)
             .thenThrow(new Error('foo'))
             .catch(retry);
-        }, { retries: 2, factor: 1 })
+        })
         .then(function () {
             throw new Error('should not succeed');
         }, function (err) {
@@ -131,7 +131,7 @@ describe('promise-retry', function () {
     it('should pass options to the underlying retry module', function (done) {
         var count = 0;
 
-        promiseRetry(function (retry) {
+        promiseRetry({ retries: 1, factor: 1 }, function (retry) {
             return Promise.delay(10)
             .then(function () {
                 if (count < 2) {
@@ -141,7 +141,7 @@ describe('promise-retry', function () {
 
                 return 'final';
             });
-        }, { retries: 1, factor: 1 })
+        })
         .then(function () {
             throw new Error('should not succeed');
         }, function (err) {
@@ -151,9 +151,9 @@ describe('promise-retry', function () {
     });
 
     it('should convert direct fulfillments into promises', function (done) {
-        promiseRetry(function () {
+        promiseRetry({ factor: 1 }, function () {
             return 'final';
-        }, { factor: 1 })
+        })
         .then(function (value) {
             expect(value).to.be('final');
         }, function () {
@@ -163,9 +163,9 @@ describe('promise-retry', function () {
     });
 
     it('should convert direct rejections into promises', function (done) {
-        promiseRetry(function () {
+        promiseRetry({ retries: 1, factor: 1 }, function () {
             throw new Error('foo');
-        }, { retries: 1, factor: 1 })
+        })
         .then(function () {
             throw new Error('should not succeed');
         }, function (err) {
@@ -175,18 +175,18 @@ describe('promise-retry', function () {
     });
 
     it('should not crash on undefined rejections', function (done) {
-        promiseRetry(function () {
+        promiseRetry({ retries: 1, factor: 1 }, function () {
             throw undefined;
-        }, { retries: 1, factor: 1 })
+        })
         .then(function () {
             throw new Error('should not succeed');
         }, function (err) {
             expect(err).to.be(undefined);
         })
         .then(function () {
-            return promiseRetry(function (retry) {
+            return promiseRetry({ retries: 1, factor: 1 }, function (retry) {
                 retry();
-            }, { retries: 1, factor: 1 });
+            });
         })
         .then(function () {
             throw new Error('should not succeed');
@@ -199,7 +199,7 @@ describe('promise-retry', function () {
     it('should retry if retry() was called with undefined', function (done) {
         var count = 0;
 
-        promiseRetry(function (retry) {
+        promiseRetry({ factor: 1 }, function (retry) {
             count += 1;
 
             return Promise.delay(10)
@@ -210,7 +210,7 @@ describe('promise-retry', function () {
 
                 return 'final';
             });
-        }, { factor: 1 })
+        })
         .then(function (value) {
             expect(value).to.be('final');
             expect(count).to.be(3);
@@ -223,7 +223,7 @@ describe('promise-retry', function () {
     it('should work with several retries in the same chain', function (done) {
         var count = 0;
 
-        promiseRetry(function (retry) {
+        promiseRetry({ retries: 1, factor: 1 }, function (retry) {
             count += 1;
 
             return Promise.delay(10)
@@ -233,7 +233,7 @@ describe('promise-retry', function () {
             .catch(function (err) {
                 retry(err);
             });
-        }, { retries: 1, factor: 1 })
+        })
         .then(function () {
             throw new Error('should not succeed');
         }, function (err) {
@@ -241,5 +241,27 @@ describe('promise-retry', function () {
             expect(count).to.be(2);
         })
         .done(done, done);
+    });
+
+    it('should still accept old function signature of (fn, options)', function (done) {
+        var count = 0;
+
+        promiseRetry(function (retry) {
+            count += 1;
+
+            return Promise.delay(10)
+                .then(function () {
+                    if (count <= 2) {
+                        retry(new Error('foo'));
+                    }
+
+                    return 'final';
+                });
+        }, { factor: 1 }).then(function (value) {
+            expect(value).to.be('final');
+            expect(count).to.be(3);
+        }, function () {
+            throw new Error('should not fail');
+        }).done(done, done);
     });
 });
