@@ -13,7 +13,7 @@ they were rather difficult to use or do not offer an easy to do conditional retr
 
 ## Usage
 
-### promiseRetry(fn, [options])
+### promiseRetry([options], fn)
 
 Calls `fn` until the returned promise ends up fulfilled or rejected with an error different than
 a `retry` error.   
