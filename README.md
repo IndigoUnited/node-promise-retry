@@ -30,7 +30,9 @@ The `fn` function will receive a `retry` function as its first argument that sho
 If there's retries left, it will throw a special `retry` error that will be handled internally to call `fn` again.
 If there's no retries left, it will throw the actual error passed to it.
 
+If you prefer, you can pass the options first using the alternative function signature `promiseRetry([options], fn)`.
 
+## Example
 ```js
 var promiseRetry = require('promise-retry');
 
