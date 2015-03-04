@@ -242,4 +242,27 @@ describe('promise-retry', function () {
         })
         .done(done, done);
     });
+
+    it('should allow options to be passed first', function (done) {
+        var count = 0;
+
+        promiseRetry({ factor: 1 }, function (retry) {
+            count += 1;
+
+            return Promise.delay(10)
+                .then(function () {
+                    if (count <= 2) {
+                        retry(new Error('foo'));
+                    }
+
+                    return 'final';
+                });
+        }).then(function (value) {
+            expect(value).to.be('final');
+            expect(count).to.be(3);
+        }, function () {
+            throw new Error('should not fail');
+        }).done(done, done);
+    });
+
 });

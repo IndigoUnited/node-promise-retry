@@ -11,6 +11,15 @@ function isRetryError(err) {
 }
 
 function promiseRetry(fn, options) {
+    var temp;
+
+    if (typeof fn === 'object' && typeof options === 'function') {
+        // swap options and fn when using alternate signature (options, fn)
+        temp = options;
+        options = fn;
+        fn = temp;
+    }
+
     var operation = retry.operation(options);
 
     return new Promise(function (resolve, reject) {
