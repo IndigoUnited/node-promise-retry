@@ -264,5 +264,4 @@ describe('promise-retry', function () {
             throw new Error('should not fail');
         }).done(done, done);
     });
-
 });
