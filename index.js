@@ -2,7 +2,7 @@
 
 var errcode = require('err-code');
 var retry = require('retry');
-var Promise = require('bluebird');
+var promiseTry = require('promise-try');
 
 var hasOwn = Object.prototype.hasOwnProperty;
 
@@ -27,7 +27,7 @@ function promiseRetry(fn, options) {
         operation.attempt(function (number) {
             var promise;
 
-            promise = Promise.try(function () {
+            promise = promiseTry(function () {
                 return fn(function (err) {
                     if (isRetryError(err)) {
                         err = err.retried;
@@ -39,7 +39,7 @@ function promiseRetry(fn, options) {
                 }, number);
             });
 
-            promise.done(resolve, function (err) {
+            promise.then(resolve, function (err) {
                 if (isRetryError(err)) {
                     err = err.retried;
 

@@ -1,4 +1,16 @@
-# node-promise-retry [![Build Status](https://travis-ci.org/IndigoUnited/node-promise-retry.svg?branch=master)](https://travis-ci.org/IndigoUnited/node-promise-retry)
+# node-promise-retry
+
+[![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency status][david-dm-image]][david-dm-url] [![Dev Dependency status][david-dm-dev-image]][david-dm-dev-url]
+
+[npm-url]:https://npmjs.org/package/promise-retry
+[downloads-image]:http://img.shields.io/npm/dm/promise-retry.svg
+[npm-image]:http://img.shields.io/npm/v/promise-retry.svg
+[travis-url]:https://travis-ci.org/IndigoUnited/node-promise-retry
+[travis-image]:http://img.shields.io/travis/IndigoUnited/node-promise-retry.svg
+[david-dm-url]:https://david-dm.org/IndigoUnited/node-promise-retry
+[david-dm-image]:https://img.shields.io/david/IndigoUnited/node-promise-retry.svg
+[david-dm-dev-url]:https://david-dm.org/IndigoUnited/node-promise-retry#info=devDependencies
+[david-dm-dev-image]:https://img.shields.io/david/dev/IndigoUnited/node-promise-retry.svg
 
 Retries a function that returns a promise, leveraging the power of the [retry](https://github.com/tim-kos/node-retry) module to the promises world.
 

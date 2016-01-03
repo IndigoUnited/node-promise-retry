@@ -17,7 +17,6 @@
     "retry",
     "promise",
     "backoff",
-    "bluebird",
     "repeat",
     "replay"
   ],
@@ -25,11 +24,12 @@
   "license": "MIT",
   "devDependencies": {
     "expect.js": "^0.3.1",
-    "mocha": "^2.1.0"
+    "mocha": "^2.3.4",
+    "sleep-promise": "^1.0.0"
   },
   "dependencies": {
-    "bluebird": "^2.6.2",
-    "err-code": "^0.1.2",
-    "retry": "^0.6.1"
+    "err-code": "^1.0.0",
+    "promise-try": "^1.0.1",
+    "retry": "^0.8.0"
   }
 }
