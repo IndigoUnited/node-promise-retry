@@ -31,5 +31,8 @@
     "err-code": "^1.0.0",
     "promise-try": "^1.0.1",
     "retry": "^0.8.0"
+  },
+  "engines" : {
+    "node" : ">=0.12"
   }
 }
