@@ -4,7 +4,7 @@
   "description": "Retries a function that returns a promise, leveraging the power of the retry module.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --bail -R spec -t 10000"
+    "test": "mocha --bail -t 10000"
   },
   "bugs": {
     "url": "https://github.com/IndigoUnited/node-promise-retry/issues/"
@@ -32,7 +32,7 @@
     "promise-try": "^1.0.1",
     "retry": "^0.8.0"
   },
-  "engines" : {
-    "node" : ">=0.12"
+  "engines": {
+    "node": ">=0.12"
   }
 }
