@@ -23,7 +23,9 @@ function promiseRetry(fn, options) {
 
     operation = retry.operation(options);
 
-    return new Promise(function (resolve, reject) {
+    options =  options || {};
+    var _Promise = options.promise || Promise;
+    return new _Promise(function (resolve, reject) {
         operation.attempt(function (number) {
             var promise;
 
