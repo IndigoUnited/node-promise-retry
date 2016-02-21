@@ -6,7 +6,7 @@
 [downloads-image]:http://img.shields.io/npm/dm/promise-retry.svg
 [npm-image]:http://img.shields.io/npm/v/promise-retry.svg
 [travis-url]:https://travis-ci.org/IndigoUnited/node-promise-retry
-[travis-image]:http://img.shields.io/travis/IndigoUnited/node-promise-retry.svg
+[travis-image]:http://img.shields.io/travis/IndigoUnited/node-promise-retry/master.svg
 [david-dm-url]:https://david-dm.org/IndigoUnited/node-promise-retry
 [david-dm-image]:https://img.shields.io/david/IndigoUnited/node-promise-retry.svg
 [david-dm-dev-url]:https://david-dm.org/IndigoUnited/node-promise-retry#info=devDependencies
