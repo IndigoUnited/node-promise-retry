@@ -2,7 +2,6 @@
 
 var errcode = require('err-code');
 var retry = require('retry');
-var promiseTry = require('promise-try');
 
 var hasOwn = Object.prototype.hasOwnProperty;
 
@@ -25,21 +24,17 @@ function promiseRetry(fn, options) {
 
     return new Promise(function (resolve, reject) {
         operation.attempt(function (number) {
-            var promise;
-
-            promise = promiseTry(function () {
+            Promise.resolve()
+            .then(function () {
                 return fn(function (err) {
                     if (isRetryError(err)) {
                         err = err.retried;
                     }
 
-                    throw errcode('Retrying', 'EPROMISERETRY', {
-                        retried: err
-                    });
+                    throw errcode('Retrying', 'EPROMISERETRY', { retried: err });
                 }, number);
-            });
-
-            promise.then(resolve, function (err) {
+            })
+            .then(resolve, function (err) {
                 if (isRetryError(err)) {
                     err = err.retried;
 

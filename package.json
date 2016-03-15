@@ -29,7 +29,6 @@
   },
   "dependencies": {
     "err-code": "^1.0.0",
-    "promise-try": "^1.0.1",
     "retry": "^0.9.0"
   },
   "engines": {
