@@ -24,7 +24,7 @@
   "license": "MIT",
   "devDependencies": {
     "expect.js": "^0.3.1",
-    "mocha": "^2.3.4",
+    "mocha": "^2.5.0",
     "sleep-promise": "^1.0.0"
   },
   "dependencies": {
