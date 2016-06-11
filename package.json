@@ -23,6 +23,7 @@
   "author": "IndigoUnited <hello@indigounited.com> (http://indigounited.com)",
   "license": "MIT",
   "devDependencies": {
+    "bluebird": "^3.4.0",
     "expect.js": "^0.3.1",
     "mocha": "^2.3.4",
     "sleep-promise": "^1.0.0"

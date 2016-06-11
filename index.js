@@ -5,6 +5,8 @@ var retry = require('retry');
 
 var hasOwn = Object.prototype.hasOwnProperty;
 
+var PromiseProvider = Promise;
+
 function isRetryError(err) {
     return err && err.code === 'EPROMISERETRY' && hasOwn.call(err, 'retried');
 }
@@ -22,9 +24,9 @@ function promiseRetry(fn, options) {
 
     operation = retry.operation(options);
 
-    return new Promise(function (resolve, reject) {
+    return new PromiseProvider(function (resolve, reject) {
         operation.attempt(function (number) {
-            Promise.resolve()
+            PromiseProvider.resolve()
             .then(function () {
                 return fn(function (err) {
                     if (isRetryError(err)) {
@@ -48,5 +50,17 @@ function promiseRetry(fn, options) {
         });
     });
 }
+
+function setPromiseProvider(newPromiseProvider) {
+    if (typeof newPromiseProvider !== 'function') {
+        throw new Error('PromiseProvider must be a function.');
+    }
+    if (typeof newPromiseProvider.resolve !== 'function') {
+        throw new Error('PromiseProvider does not have a resolve method.');
+    }
+    PromiseProvider = newPromiseProvider;
+}
+
+promiseRetry.setPromiseProvider = setPromiseProvider;
 
 module.exports = promiseRetry;
