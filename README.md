@@ -9,7 +9,7 @@
 [travis-image]:http://img.shields.io/travis/IndigoUnited/node-promise-retry/master.svg
 [david-dm-url]:https://david-dm.org/IndigoUnited/node-promise-retry
 [david-dm-image]:https://img.shields.io/david/IndigoUnited/node-promise-retry.svg
-[david-dm-dev-url]:https://david-dm.org/IndigoUnited/node-promise-retry#info=devDependencies
+[david-dm-dev-url]:https://david-dm.org/IndigoUnited/node-promise-retry?type=dev
 [david-dm-dev-image]:https://img.shields.io/david/dev/IndigoUnited/node-promise-retry.svg
 
 Retries a function that returns a promise, leveraging the power of the [retry](https://github.com/tim-kos/node-retry) module to the promises world.
