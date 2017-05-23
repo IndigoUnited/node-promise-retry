@@ -260,4 +260,15 @@ describe('promise-retry', function () {
             throw new Error('should not fail');
         });
     });
+
+    it("should allow options to pass third party promise module", function () {
+        function CustomPromise () {
+        }
+
+        CustomPromise.prototype.then = function () {
+        };
+
+        var p = promiseRetry({promise: CustomPromise}, function () {});
+        expect(p instanceof CustomPromise).to.be(true);
+    });
 });
