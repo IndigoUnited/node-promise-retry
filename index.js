@@ -2,6 +2,7 @@
 
 var errcode = require('err-code');
 var retry = require('retry');
+var Promise = require('any-promise');
 
 var hasOwn = Object.prototype.hasOwnProperty;
 
