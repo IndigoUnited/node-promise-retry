@@ -25,7 +25,7 @@
   "devDependencies": {
     "expect.js": "^0.3.1",
     "mocha": "^3.0.0",
-    "sleep-promise": "^2.0.0"
+    "sleep-promise": "^5.1.0"
   },
   "dependencies": {
     "err-code": "^1.0.0",
