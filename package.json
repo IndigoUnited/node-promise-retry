@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "err-code": "^1.0.0",
-    "retry": "^0.12.0"
+    "retry": "git://github.com/timbowhite/node-retry"
   },
   "engines": {
     "node": ">=0.12"
