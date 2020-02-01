@@ -41,8 +41,8 @@ The `options` argument is an object which maps to the [retry](https://github.com
 
 
 The `fn` function will receive a `retry` function as its first argument that should be called with an error whenever you want to retry `fn`. The `retry` function will always throw an error.   
-If there's retries left, it will throw a special `retry` error that will be handled internally to call `fn` again.
-If there's no retries left, it will throw the actual error passed to it.
+If there are retries left, it will throw a special `retry` error that will be handled internally to call `fn` again.
+If there are no retries left, it will throw the actual error passed to it.
 
 If you prefer, you can pass the options first using the alternative function signature `promiseRetry([options], fn)`.
 
