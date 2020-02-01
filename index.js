@@ -32,7 +32,7 @@ function promiseRetry(fn, options) {
                     }
 
                     throw errcode('Retrying', 'EPROMISERETRY', { retried: err });
-                }, number);
+                }, number, operation);
             })
             .then(resolve, function (err) {
                 if (isRetryError(err)) {
