@@ -24,12 +24,12 @@
   "license": "MIT",
   "devDependencies": {
     "expect.js": "^0.3.1",
-    "mocha": "^3.0.0",
-    "sleep-promise": "^2.0.0"
+    "mocha": "^7.2.0",
+    "sleep-promise": "^8.0.1"
   },
   "dependencies": {
-    "err-code": "^1.0.0",
-    "retry": "^0.10.0"
+    "err-code": "^2.0.1",
+    "retry": "^0.12.0"
   },
   "engines": {
     "node": ">=0.12"
